@@ -1,0 +1,33 @@
+{
+  "monterrey": {
+    "nombre": "Estadio BBVA - Monterrey",
+    "modelo": "models/azteca.glb",
+    "partidos": [
+      { "partido": "Partido 75", "fecha": "29 de junio de 2026", "equipos": "1º Grupo F vs 2º Grupo C" },
+      { "partido": "Partido 10", "fecha": "14 de junio de 2026", "equipos": "Por definir vs Por definir" },
+      { "partido": "Partido 28", "fecha": "20 de junio de 2026", "equipos": "Por definir vs Por definir" },
+      { "partido": "Partido 54", "fecha": "24 de junio de 2026", "equipos": "Por definir vs Por definir" }
+    ]
+  },
+  "cdmx": {
+    "nombre": "Estadio Azteca - Ciudad de México",
+    "modelo": "models/azteca.glb",
+    "partidos": [
+      { "partido": "Partido 1 (Inauguración)", "fecha": "11 de junio de 2026", "equipos": "México vs Por definir" },
+      { "partido": "Partido 12", "fecha": "17 de junio de 2026", "equipos": "México vs Brasil" },
+      { "partido": "Partido 24", "fecha": "24 de junio de 2026", "equipos": "Por definir vs Por definir" },
+      { "partido": "Partido 79 (Dieciseisavos)", "fecha": "30 de junio de 2026", "equipos": "1º Grupo A vs 2º Grupo C" },
+      { "partido": "Partido 92 (Octavos)", "fecha": "5 de julio de 2026", "equipos": "Por definir vs Por definir" }
+    ]
+  },
+  "guadalajara": {
+    "nombre": "Estadio Akron - Guadalajara",
+    "modelo": "models/akron.glb",
+    "partidos": [
+      { "partido": "Partido 2", "fecha": "11 de junio de 2026", "equipos": "Por definir vs Por definir" },
+      { "partido": "Partido 28", "fecha": "18 de junio de 2026", "equipos": "México vs Por definir" },
+      { "partido": "Partido 33", "fecha": "23 de junio de 2026", "equipos": "Argentina vs Alemania" },
+      { "partido": "Partido 48", "fecha": "26 de junio de 2026", "equipos": "Por definir vs Por definir" }
+    ]
+  }
+}

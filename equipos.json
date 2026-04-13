@@ -1,0 +1,26 @@
+{
+  "mexico": {
+    "nombre": "Selección de México",
+    "modelo": "models/mexico.glb",
+    "jugadores": [
+      { "nombre": "Jugador 1", "posicion": "Delantero" },
+      { "nombre": "Jugador 2", "posicion": "Portero" }
+    ]
+  },
+  "brasil": {
+    "nombre": "Selección de Brasil",
+    "modelo": "models/brasil.glb",
+    "jugadores": [
+      { "nombre": "Jugador 1", "posicion": "Delantero" },
+      { "nombre": "Jugador 2", "posicion": "Defensa" }
+    ]
+  },
+  "argentina": {
+    "nombre": "Selección de Argentina",
+    "modelo": "models/argentina.glb",
+    "jugadores": [
+      { "nombre": "Jugador 1", "posicion": "Delantero" },
+      { "nombre": "Jugador 2", "posicion": "Mediocampista" }
+    ]
+  }
+}

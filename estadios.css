@@ -1,0 +1,138 @@
+/* Paleta de colores */
+:root {
+  --rojo: #e63946;
+  --verde: #2a9d8f;
+  --azul: #264653;
+  --blanco: #f1faee;
+  --gris: #333;
+}
+
+/* Reset básico */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--blanco);
+  color: var(--gris);
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--azul);
+  padding: 10px 20px;
+  color: var(--blanco);
+}
+
+.logo {
+  height: 40px;
+}
+
+.app-name {
+  flex-grow: 1;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-bar {
+  padding: 8px 35px 8px 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: var(--blanco);
+  color: var(--gris);
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gris);
+}
+
+/* Cards */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background-color: var(--azul);
+  padding: 20px;
+  border-radius: 15px;
+  color: var(--blanco);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.card-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.estadio { background-color: var(--rojo); }
+.equipos { background-color: var(--verde); }
+.historia { background-color: var(--azul); }
+.trivia { background-color: #6a4c93; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cards-container {
+    display: flex;
+    overflow-x: auto;
+  }
+  .card {
+    min-width: 250px;
+    margin-right: 15px;
+  }
+}
+
+/* Footer fijo */
+.footer {
+  text-align: center;
+  padding: 15px;
+  background-color: var(--azul);
+  color: var(--blanco);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.section-title {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  margin: 20px 0;
+  color: var(--azul);
+}
+
+.btn {
+  background-color: var(--verde);
+  color: var(--blanco);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: var(--rojo);
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "titulo": "México vs Paraguay 2002",
+    "descripcion": "Fase de grupos, partido emocionante",
+    "video": "assets/videos/mexico_paraguay.mp4",
+    "miniatura": "assets/videos/thumbnails/mexico_paraguay.jpg",
+    "equipos": ["México", "Paraguay"],
+    "ganador": "Paraguay",
+    "colores": {
+      "México": ["#006847", "#FFFFFF", "#CE1126"],
+      "Paraguay": ["#D52B1E", "#FFFFFF", "#0038A8"]
+    },
+    "banderas": {
+      "México": "assets/videos/thumbnails/flags/¡mexico.png",
+      "Paraguay": "assets/videos/thumbnails/flags/paraguay.png"
+    }
+  },
+  {
+    "id": 2,
+    "titulo": "Argentina vs Francia 2022",
+    "descripcion": "Final del Mundial, partidazo",
+    "video": "assets/videos/mexico_paraguay.mp4",
+    "miniatura": "assets/videos/thumbnails/mexico_paraguay.jpg",
+    "equipos": ["Argentina", "Francia"],
+    "ganador": "Argentina",
+    "colores": {
+      "Argentina": ["#75AADB", "#FFFFFF", "#F6B40E"],
+      "Francia": ["#002395", "#FFFFFF", "#ED2939"]
+    },
+    "banderas": {
+      "Argentina": "assets/flags/argentina.jpg",
+      "Francia": "assets/flags/francia.png"
+    }
+  },
+  {
+    "id": 3,
+    "titulo": "Brasil vs Alemania 2014",
+    "descripcion": "Semifinal, el Mineirazo",
+    "video": "assets/videos/mexico_paraguay.mp4",
+    "miniatura": "assets/videos/thumbnails/mexico_paraguay.jpg",
+    "equipos": ["Brasil", "Alemania"],
+    "ganador": "Alemania",
+    "colores": {
+      "Brasil": ["#009B3A", "#FEDD00", "#002776"],
+      "Alemania": ["#000000", "#DD0000", "#FFCE00"]
+    },
+    "banderas": {
+      "Brasil": "assets/flags/brasil.png",
+      "Alemania": "assets/flags/alemania.png"
+    }
+  }
+]

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mundial 2026 - Historia y Trivia</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+        body {
+  background-image: url('assets/fondo_mundial.jpg');
+  background-size: cover;       /* Esto hace que la imagen cubra toda la pantalla */
+  background-position: center;  /* Centra la imagen */
+  background-attachment: fixed; /* El fondo se queda quieto mientras haces scroll */
+  background-repeat: no-repeat; /* Evita que la imagen se repita como mosaico */
+}
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 30px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .video-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .video-card:hover { transform: scale(1.02); }
+    .video-thumbnail {
+      width: 100%;
+      height: 180px;
+      background: #1e3a5f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+    .video-info {
+      padding: 15px;
+      background: var(--azul);
+      color: var(--blanco);
+    }
+    .video-info h3 {
+      margin: 0 0 5px;
+      font-family: 'Oswald', sans-serif;
+    }
+    .video-info p {
+      margin: 0;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    #reproductor-container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: var(--azul);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      display: none;
+    }
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    #videoPlayer {
+      width: 100%;
+      display: block;
+      background: black;
+      border-radius: 10px;
+    }
+    #filtro-capa {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 10;
+      border-radius: 10px;
+    }
+    .filter-controls {
+      background: rgba(0,0,0,0.7);
+      padding: 15px;
+      border-radius: 15px;
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+    .filter-control {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      background: var(--blanco);
+      padding: 8px 12px;
+      border-radius: 30px;
+      min-width: 100px;
+    }
+    .filter-control label {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: var(--azul);
+    }
+    .filter-control input {
+      width: 100%;
+      cursor: pointer;
+    }
+    .trivia-box {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .banderas-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    .bandera-opcion {
+      background: white;
+      border: 4px solid transparent;
+      border-radius: 20px;
+      padding: 15px 25px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      min-width: 140px;
+    }
+    .bandera-opcion:hover {
+      transform: scale(1.05);
+      border-color: var(--rojo);
+    }
+    .bandera-opcion .flag-icon {
+      font-size: 1.8rem;
+      font-weight: normal;
+    }
+    #mensaje-resultado {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .hidden { display: none !important; }
+    .btn-regresar {
+      background: var(--verde);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html">
+    <img src="logo.jpg" alt="Logo App" class="logo">
+  </a>
+    <h1 class="app-name">Historia del Mundial</h1>
+    <a href="index.html" style="color: white; margin-right: 20px;">← Volver</a>
+  </nav>
+
+  <main>
+    <h1 class="section-title">Momentos históricos</h1>
+    <p style="text-align: center; max-width: 600px; margin: 0 auto;">Selecciona un partido, adivina el ganador y diviertete.</p>
+
+    <div id="videos-grid" class="videos-grid"></div>
+
+    <div id="reproductor-container">
+      <div class="video-wrapper">
+        <video id="videoPlayer" controls playsinline></video>
+        <div id="filtro-capa"></div>
+      </div>
+
+      <div class="filter-controls">
+        <div class="filter-control"><label>Rotación de tono</label><input type="range" id="hue" min="0" max="360" step="1" value="0"><span id="hueValue">0</span></div>
+        <div class="filter-control"><label>Saturación</label><input type="range" id="saturation" min="0" max="2" step="0.01" value="1"><span id="satValue">1.00</span></div>
+        <div class="filter-control"><label>Brillo</label><input type="range" id="brightness" min="0" max="2" step="0.01" value="1"><span id="brightValue">1.00</span></div>
+        <div class="filter-control"><label>Contraste</label><input type="range" id="contrast" min="0" max="2" step="0.01" value="1"><span id="contrastValue">1.00</span></div>
+        <div class="filter-control"><label>Desenfoque</label><input type="range" id="blur" min="0" max="10" step="0.5" value="0"><span id="blurValue">0</span></div>
+      </div>
+
+      <div class="trivia-box">
+        <p>¿Quién ganó este partido?</p>
+        <div id="banderas-container" class="banderas-container"></div>
+        <div id="mensaje-resultado" class="hidden"></div>
+      </div>
+
+      <button id="btn-volver-grid" class="btn-regresar">← Ver más videos</button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Diana Patricia Del Angel Del Angel - Jennifer Carly Garcia Saldana</p>
+  </footer>
+
+  <script>
+    // DATOS DE LOS PARTIDOS
+    const partidos = [
+      {
+        id: 1,
+        titulo: "Argentina vs Alemania (2014) - Final",
+        descripcion: "Gol de Mario Götze en la prórroga (113') | Marcador: Alemania 1-0 Argentina",
+        video: "assets/videos/alemaniavsargentina.mp4",
+        equipos: ["Argentina", "Alemania"],
+        ganador: "Alemania",
+        colores: {
+          "Argentina": ["#75AADB", "#FFFFFF", "#F6B40E"],
+          "Alemania": ["#000000", "#DD0000", "#FFCE00"]
+        },
+        banderas: { "Argentina": "ARG", "Alemania": "GER" }
+      },
+      {
+        id: 2,
+        titulo: "México vs Alemania (2018) - Fase grupos",
+        descripcion: "Gol de Hirving Lozano (35') | Marcador: México 1-0 Alemania",
+        video: "assets/videos/mexicovsalemania.mp4",
+        equipos: ["México", "Alemania"],
+        ganador: "México",
+        colores: {
+          "México": ["#006847", "#FFFFFF", "#CE1126"],
+          "Alemania": ["#000000", "#DD0000", "#FFCE00"]
+        },
+        banderas: { "México": "MEX", "Alemania": "GER" }
+      },
+      {
+        id: 3,
+        titulo: "Argentina vs Francia (2022) - Final",
+        descripcion: "3-3, Argentina gana en penales. Gol de Mbappé 2-2 | Marcador: Argentina 3-3 Francia (4-2 pen)",
+        video: "assets/videos/argentinavsfrancia.mp4",
+        equipos: ["Argentina", "Francia"],
+        ganador: "Argentina",
+        colores: {
+          "Argentina": ["#75AADB", "#FFFFFF", "#F6B40E"],
+          "Francia": ["#002395", "#FFFFFF", "#ED2939"]
+        },
+        banderas: { "Argentina": "ARG", "Francia": "FRA" }
+      },
+      {
+        id: 4,
+        titulo: "Brasil vs Alemania (2002) - Final",
+        descripcion: "Dos goles de Ronaldo (67', 79') | Marcador: Brasil 2-0 Alemania",
+        video: "assets/videos/brasilvsalemania.mp4",
+        equipos: ["Brasil", "Alemania"],
+        ganador: "Brasil",
+        colores: {
+          "Brasil": ["#009B3A", "#FEDD00", "#002776"],
+          "Alemania": ["#000000", "#DD0000", "#FFCE00"]
+        },
+        banderas: { "Brasil": "BRA", "Alemania": "GER" }
+      },
+      {
+        id: 5,
+        titulo: "Argentina vs Inglaterra (1986) - Cuartos",
+        descripcion: "Gol del Siglo de Maradona (55') | Marcador: Argentina 2-1 Inglaterra",
+        video: "assets/videos/argentinavsinglaterra.mp4",
+        equipos: ["Argentina", "Inglaterra"],
+        ganador: "Argentina",
+        colores: {
+          "Argentina": ["#75AADB", "#FFFFFF", "#F6B40E"],
+          "Inglaterra": ["#FFFFFF", "#C8102E", "#012169"]
+        },
+        banderas: { "Argentina": "ARG", "Inglaterra": "ENG" }
+      }
+    ];
+
+    // Elementos DOM
+    const videosGrid = document.getElementById('videos-grid');
+    const reproductorContainer = document.getElementById('reproductor-container');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const filtroCapa = document.getElementById('filtro-capa');
+    const banderasContainer = document.getElementById('banderas-container');
+    const mensajeResultado = document.getElementById('mensaje-resultado');
+    const btnVolver = document.getElementById('btn-volver-grid');
+
+    let partidoActual = null;
+
+    // Filtros CSS
+    const hueSlider = document.getElementById('hue');
+    const saturationSlider = document.getElementById('saturation');
+    const brightnessSlider = document.getElementById('brightness');
+    const contrastSlider = document.getElementById('contrast');
+    const blurSlider = document.getElementById('blur');
+    const hueValue = document.getElementById('hueValue');
+    const satValue = document.getElementById('satValue');
+    const brightValue = document.getElementById('brightValue');
+    const contrastValue = document.getElementById('contrastValue');
+    const blurValue = document.getElementById('blurValue');
+
+    function updateCSSFilters() {
+      const hue = hueSlider.value;
+      const sat = saturationSlider.value;
+      const bright = brightnessSlider.value;
+      const contrast = contrastSlider.value;
+      const blur = blurSlider.value;
+      videoPlayer.style.filter = `hue-rotate(${hue}deg) saturate(${sat}) brightness(${bright}) contrast(${contrast}) blur(${blur}px)`;
+      hueValue.innerText = hue;
+      satValue.innerText = sat;
+      brightValue.innerText = bright;
+      contrastValue.innerText = contrast;
+      blurValue.innerText = blur;
+    }
+
+    hueSlider.addEventListener('input', updateCSSFilters);
+    saturationSlider.addEventListener('input', updateCSSFilters);
+    brightnessSlider.addEventListener('input', updateCSSFilters);
+    contrastSlider.addEventListener('input', updateCSSFilters);
+    blurSlider.addEventListener('input', updateCSSFilters);
+
+    // Renderizar cuadrícula de videos
+    function renderizarVideos() {
+      videosGrid.innerHTML = '';
+      partidos.forEach(partido => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+          <div class="video-thumbnail">${partido.equipos[0]} vs ${partido.equipos[1]}</div>
+          <div class="video-info">
+            <h3>${partido.titulo}</h3>
+            <p>${partido.descripcion}</p>
+          </div>
+        `;
+        card.addEventListener('click', () => seleccionarPartido(partido));
+        videosGrid.appendChild(card);
+      });
+    }
+
+    function seleccionarPartido(partido) {
+      partidoActual = partido;
+      videosGrid.style.display = 'none';
+      reproductorContainer.style.display = 'block';
+
+      // Cargar el video
+      videoPlayer.src = partido.video;
+      videoPlayer.load();
+      videoPlayer.play().catch(e => console.log("Autoplay bloqueado. Usa los controles manualmente."));
+
+      // Resetear filtros a valores neutros
+      hueSlider.value = '0';
+      saturationSlider.value = '1';
+      brightnessSlider.value = '1';
+      contrastSlider.value = '1';
+      blurSlider.value = '0';
+      updateCSSFilters();
+
+      // Resetear capa de color y mensaje
+      filtroCapa.style.opacity = '0';
+      mensajeResultado.classList.add('hidden');
+
+      // Generar botones de banderas (sin emojis, solo texto)
+      banderasContainer.innerHTML = '';
+      partidoActual.equipos.forEach(equipo => {
+        const btn = document.createElement('div');
+        btn.className = 'bandera-opcion';
+        const flagText = partidoActual.banderas[equipo];
+        btn.innerHTML = `<span class="flag-icon">${flagText}</span><span>${equipo}</span>`;
+        btn.addEventListener('click', () => manejarEleccion(equipo));
+        banderasContainer.appendChild(btn);
+      });
+    }
+
+    function manejarEleccion(equipoElegido) {
+      if (!partidoActual) return;
+      const ganadorReal = partidoActual.ganador;
+      const coloresGanador = partidoActual.colores[ganadorReal];
+      if (coloresGanador && coloresGanador.length >= 2) {
+        const gradiente = `linear-gradient(135deg, ${coloresGanador.join(', ')})`;
+        filtroCapa.style.background = gradiente;
+        filtroCapa.style.opacity = '0.5';
+      } else {
+        filtroCapa.style.backgroundColor = coloresGanador[0] || '#ff0000';
+        filtroCapa.style.opacity = '0.5';
+      }
+      mensajeResultado.classList.remove('hidden');
+      if (equipoElegido === ganadorReal) {
+        mensajeResultado.innerHTML = '¡Acertaste!';
+        mensajeResultado.style.background = 'var(--verde)';
+      } else {
+        mensajeResultado.innerHTML = `Fallaste. El ganador fue ${ganadorReal}`;
+        mensajeResultado.style.background = 'var(--rojo)';
+      }
+    }
+
+    btnVolver.addEventListener('click', () => {
+      videoPlayer.pause();
+      videosGrid.style.display = 'grid';
+      reproductorContainer.style.display = 'none';
+      filtroCapa.style.opacity = '0';
+      mensajeResultado.classList.add('hidden');
+    });
+
+    renderizarVideos();
+  </script>
+</body>
+</html>

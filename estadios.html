@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estadios - Mundial 2026 AR</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+<body>
+  <!-- Navbar -->
+    <nav class="navbar">
+      <a href="index.html">
+        <img src="logo.jpg" alt="Logo App" class="logo">
+      </a>
+      <h1 class="app-name">Mundial 2026</h1>
+    </nav>
+
+  <!-- Contenido principal -->
+  <main>
+    <h1 class="section-title">Estadios del Mundial 2026</h1>
+
+    <!-- Carrusel de estadios -->
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        <!-- Monterrey -->
+        <div class="swiper-slide">
+          <div class="card estadio">
+            <img src="monterrey.jpg" alt="Estadio BBVA" class="card-img">
+            <h2>Estadio BBVA - Monterrey</h2>
+            <a href="estadio.html?id=monterrey"><button class="btn">Ver detalles</button></a>
+          </div>
+        </div>
+
+        <!-- Ciudad de México -->
+        <div class="swiper-slide">
+          <div class="card estadio">
+            <img src="azteca.jpg" alt="Estadio Azteca" class="card-img">
+            <h2>Estadio Azteca - Ciudad de México</h2>
+            <a href="estadio.html?id=cdmx"><button class="btn">Ver detalles</button></a>
+          </div>
+        </div>
+
+        <!-- Guadalajara -->
+        <div class="swiper-slide">
+          <div class="card estadio">
+            <img src="akron.jpg" alt="Estadio Akron" class="card-img">
+            <h2>Estadio Akron - Guadalajara</h2>
+            <a href="estadio.html?id=guadalajara"><button class="btn">Ver detalles</button></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flechas -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+
+      <!-- Paginación -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Diana Patricia Del Angel Del Angel, Jennider Carly Garcia Saldana</p>
+  </footer>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Inicialización del carrusel -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      breakpoints: {
+        768: { slidesPerView: 2 }, // tablet
+        1024: { slidesPerView: 3 } // desktop
+      }
+    });
+  </script>
+</body>
+</html>

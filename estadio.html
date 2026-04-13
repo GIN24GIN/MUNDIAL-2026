@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estadio - Mundial 2026 AR</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <!-- Librería para modelos 3D (ejemplo con model-viewer de Google) -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+    <nav class="navbar">
+      <a href="index.html">
+        <img src="logo.jpg" alt="Logo App" class="logo">
+      </a>
+      <h1 class="app-name">Mundial 2026</h1>
+    </nav>
+  <!-- Contenido dinámico -->
+  <main>
+    <h1 id="estadio-nombre" class="section-title"></h1>
+
+    <!-- Modelo 3D -->
+    <div class="stadium-view">
+      <model-viewer id="estadio-modelo" src="" alt="Modelo del estadio" auto-rotate camera-controls></model-viewer>
+    </div>
+
+    <!-- Tabla de partidos -->
+    <table id="tabla-partidos" class="match-table">
+      <thead>
+        <tr>
+          <th>Partido</th>
+          <th>Fecha</th>
+          <th>Equipos</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Diana Patricia Del Angel Del Angel, Jennifer Carly Garcia Saldana</p>
+  </footer>
+
+  <!-- Script -->
+  <script src="estadio.js"></script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mundial 2026 AR - Equipos</title>
+  
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+  <script src="https://unpkg.com/aframe-particle-system-component@1.1.3/dist/aframe-particle-system-component.min.js"></script>
+  <style>
+
+    body {
+  background-image: url('assets/fondo_mundial.jpg');
+  background-size: cover;       /* Esto hace que la imagen cubra toda la pantalla */
+  background-position: center;  /* Centra la imagen */
+  background-attachment: fixed; /* El fondo se queda quieto mientras haces scroll */
+  background-repeat: no-repeat; /* Evita que la imagen se repita como mosaico */
+}
+    /* Crucial para que no se vea azul: la escena DEBE ser transparente */
+    a-scene { display: block; position: relative; height: 100%; width: 100%; }
+    
+    .ar-window {
+      width: 100%; height: 450px; position: relative; margin: 20px 0;
+      border-radius: 15px; overflow: hidden; display: none; 
+      border: 3px solid #ed1c24; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    /* Forzamos que el video de la cámara esté detrás de todo */
+    .ar-window video {
+      position: absolute !important; top: 0 !important; left: 0 !important;
+      width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: 1 !important;
+    }
+    /* El canvas de A-Frame debe estar sobre el video pero ser transparente */
+    .a-canvas { position: absolute !important; z-index: 2 !important; }
+
+    .mindar-ui-scanning { z-index: 10 !important; }
+    .section-title { text-align: center; margin-top: 20px; color: #004687; }
+    .controles-ar { display: none; justify-content: center; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+    .btn-anim { padding: 10px 15px; border-radius: 8px; border: none; color: white; font-weight: bold; cursor: pointer; }
+    .card-img { width: 100%; border-radius: 10px; }
+    .card { padding: 15px; background: white; border-radius: 15px; text-align: center; }
+
+          /* Esto controla que todas las imágenes de los botones tengan el mismo tamaño */
+      .btn-icon {
+        width: 30px;  /* Tamaño fijo para que no salgan gigantes */
+        height: 30px; /* Mismo alto para que sea cuadrada */
+        object-fit: contain; /* Evita que la imagen se deforme */
+      }
+
+      /* Ajuste para que el botón se vea como una "cápsula" ordenada */
+      .btn-anim {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Espacio exacto entre la imagen y el texto */
+        padding: 10px 20px;
+        border-radius: 12px;
+        border: none;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s; /* Un pequeño efecto al hacer clic */
+      }
+
+      .btn-anim:active {
+        transform: scale(0.95); /* Se encoge un poquito al presionarlo */
+      }
+  </style>
+</head>
+<body>
+
+    <nav class="navbar">
+      <a href="index.html">
+        <img src="logo.jpg" alt="Logo App" class="logo">
+      </a>
+      <h1 class="app-name">Mundial 2026</h1>
+    </nav>
+  <main>
+    <h1 class="section-title">Equipos del Mundial 2026</h1>
+
+    <div class="scan-container" style="text-align: center; padding: 10px;">
+      <button id="btn-ar" class="btn-scan">
+        <img src="assets/camara.png" alt="" class="btn-icon">
+        Activar cámara
+      </button>
+
+      <div id="ar-wrapper" class="ar-window">
+
+        <a-scene 
+          mindar-image="imageTargetSrc: jugadores/COMPLETO.mind; autoStart: false; uiScanning: #scanning-overlay;" 
+          embedded 
+          renderer="colorManagement: true; alpha: true; antialias: true;" 
+          vr-mode-ui="enabled: false" 
+          device-orientation-permission-ui="enabled: false">
+          
+          <a-assets>
+            <a-asset-item id="mod-suiza" src="models/suiza_anima.glb"></a-asset-item>
+            <a-asset-item id="mod-canada" src="models/canada_anima.glb"></a-asset-item>
+            <a-asset-item id="mod-sudafrica" src="models/sudafrica_anima.glb"></a-asset-item>
+            <a-asset-item id="mod-uruguay" src="models/uruguay_anima.glb"></a-asset-item>
+            <a-asset-item id="mod-usa" src="models/eu_anima.glb"></a-asset-item>
+            <a-asset-item id="mod-qatar" src="models/qatar_anima.glb"></a-asset-item>
+            <a-asset-item id="mod-corea" src="models/corea_anima.glb"></a-asset-item>
+            <a-asset-item id="mod-argentina" src="models/argentina_anima.glb"></a-asset-item>
+            <a-asset-item id="mod-brasil" src="models/brasil_anima.glb"></a-asset-item>
+            <a-asset-item id="mod-mexico" src="models/mexico_anima.glb"></a-asset-item>
+
+            <a-asset-item id="logo-suiza" src="models/suiza_logo.glb"></a-asset-item>
+            <a-asset-item id="logo-canada" src="models/canada_logo.glb"></a-asset-item>
+            <a-asset-item id="logo-sudafrica" src="models/sudafrica_logo.glb"></a-asset-item>
+            <a-asset-item id="logo-uruguay" src="models/URUGUAY_logo.glb"></a-asset-item>
+            <a-asset-item id="logo-usa" src="models/usa_logo.glb"></a-asset-item>
+            <a-asset-item id="logo-qatar" src="models/qatar_logo.glb"></a-asset-item>
+            <a-asset-item id="logo-corea" src="models/corea_logo.glb"></a-asset-item>
+            <a-asset-item id="logo-argentina" src="models/argentina_logo.glb"></a-asset-item>
+            <a-asset-item id="logo-brasil" src="models/brasil_logo.glb"></a-asset-item>
+            <a-asset-item id="logo-mexico" src="models/mexico_logo.glb"></a-asset-item>
+          </a-assets>
+
+          <a-camera position="0 0 0" look-controls="enabled: false" camera="near: 0.01; far: 10000;"></a-camera>
+
+          <a-entity mindar-image-target="targetIndex: 0">
+            <a-gltf-model class="modelo-ar" src="#mod-suiza" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="SUIZA\nJugador: Manuel Akanji\nPos: Defensa" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 1">
+            <a-gltf-model class="modelo-ar" src="#mod-canada" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="CANADA\nJugador: Alphonso Davies\nPos: Extremo" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 2">
+            <a-gltf-model class="modelo-ar" src="#mod-sudafrica" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="SUDAFRICA\nJugador: Percy Tau\nPos: Delantero" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 3">
+            <a-gltf-model class="modelo-ar" src="#mod-uruguay" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="URUGUAY\nJugador: Federico Valverde\nPos: Medio" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 4">
+            <a-gltf-model class="modelo-ar" src="#mod-usa" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="EE.UU.\nJugador: Christian Pulisic\nPos: Delantero" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 5">
+            <a-gltf-model class="modelo-ar" src="#mod-qatar" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="QATAR\nJugador: Akram Afif\nPos: Delantero" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 6">
+            <a-gltf-model class="modelo-ar" src="#mod-corea" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="COREA DEL SUR\nJugador: Son Heung-min\nPos: Extremo" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 7">
+            <a-gltf-model class="modelo-ar" src="#mod-argentina" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="ARGENTINA\nJugador: Lionel Messi\nPos: Leyenda" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 8">
+            <a-gltf-model class="modelo-ar" src="#mod-brasil" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="BRASIL\nJugador: Vinicius Junior\nPos: Delantero" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 9">
+            <a-gltf-model class="modelo-ar" src="#mod-mexico" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
+          <a-entity class="contenedor-confeti" position="0 0 0"></a-entity>
+            <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="MEXICO\nJugador: Carlos Acevedo\nPos: Portero" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+          
+          <a-entity mindar-image-target="targetIndex: 10">
+            <a-gltf-model class="modelo-ar" src="#logo-suiza" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="SUIZA\nRanking: 12\nTitulos: 0" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 11">
+            <a-gltf-model class="modelo-ar" src="#logo-canada" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="CANADA\nRanking: 40\nTitulos: 0" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 12">
+            <a-gltf-model class="modelo-ar" src="#logo-sudafrica" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="SUDAFRICA\nRanking: 59\nTitulos: 1" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 13">
+            <a-gltf-model class="modelo-ar" src="#logo-uruguay" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="URUGUAY\nRanking: 11\nTitulos: 2" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 14">
+            <a-gltf-model class="modelo-ar" src="#logo-usa" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="EE.UU.\nRanking: 13\nTitulos: 0" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 15">
+            <a-gltf-model class="modelo-ar" src="#logo-qatar" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="QATAR\nRanking: 37\nTitulos: 2" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 16">
+            <a-gltf-model class="modelo-ar" src="#logo-corea" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="COREA DEL SUR\nRanking: 22\nTitulos: 0" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 17">
+            <a-gltf-model class="modelo-ar" src="#logo-argentina" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="ARGENTINA\nRanking: 1\nTitulos: 3" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 18">
+            <a-gltf-model class="modelo-ar" src="#logo-brasil" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="BRASIL\nRanking: 5\nTitulos: 5" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-entity mindar-image-target="targetIndex: 19">
+            <a-gltf-model class="modelo-ar" src="#logo-mexico" position="0 -0.2 0" scale="0.2 0.2 0.2"></a-gltf-model>
+            <a-plane class="info-panel" position="0 0.5 0.6" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
+              <a-text value="MEXICO\nRanking: 15\nTitulos: 0" align="center" color="#FFF" width="2.5"></a-text>
+            </a-plane>
+          </a-entity>
+
+          <a-light type="ambient" color="#BBB"></a-light>
+          <a-light type="directional" color="#FFF" intensity="0.8" position="-1 2 4"></a-light>
+        </a-scene>
+      </div>
+
+      <div id="controles-ar" class="controles-ar" style="display: none; justify-content: center; gap: 10px; margin: 15px 0; flex-wrap: wrap;">
+        
+        <button id="btn-aplaudir" class="btn-anim" style="background-color: #28a745;">
+          <img src="assets/aplauso.png" alt="Aplaudir" class="btn-icon">
+          <span>Aplaudir</span>
+        </button>
+        
+        <button id="btn-saludar" class="btn-anim" style="background-color: #007bff;">
+          <img src="assets/saludar.png" alt="Saludar" class="btn-icon">
+          <span>Saludar e Info</span>
+        </button>
+
+        <button id="btn-limpiar" class="btn-anim" style="background-color: #6c757d;">
+          Reset
+        </button>
+        
+      </div>
+
+
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const sceneEl = document.querySelector("a-scene");
+    const btnAr = document.getElementById("btn-ar");
+
+    // Fix visual para modelos
+    const fixModel = (el) => {
+        const obj = el.getObject3D('mesh');
+        if (obj) {
+            obj.traverse((node) => {
+                if (node.isMesh) {
+                    node.frustumCulled = false;
+                    node.material.side = 2;
+                }
+            });
+        }
+    };
+
+    // Función para lanzar confeti dinámico (Independiente)
+    const lanzarConfeti = () => {
+        document.querySelectorAll(".contenedor-confeti").forEach(contenedor => {
+            const confeti = document.createElement("a-entity");
+            
+            // Configuramos el sistema de partículas directamente
+            confeti.setAttribute("particle-system", {
+                preset: "default",
+                color: "#FFD700, #ed1c24, #28a745",
+                particleCount: 1000,
+                size: 0.1,
+                maxAge: 2,
+                positionSpread: "1 1 1"
+            });
+
+            contenedor.appendChild(confeti);
+
+            // Se elimina después de 4 segundos para mantener limpia la escena
+            setTimeout(() => {
+                if (confeti.parentNode) contenedor.removeChild(confeti);
+            }, 4000);
+        });
+    };
+
+    // Activar Cámara
+    btnAr.addEventListener("click", () => {
+        document.getElementById("ar-wrapper").style.display = "block";
+        document.getElementById("controles-ar").style.display = "flex";
+        if (sceneEl.systems["mindar-image-system"]) sceneEl.systems["mindar-image-system"].start();
+        btnAr.style.display = "none";
+    });
+
+    // Función Universal de Animación e Info
+    const ejecutarAccion = (clip, mostrarInfo) => {
+        document.querySelectorAll(".modelo-ar").forEach(m => {
+            m.setAttribute('animation-mixer', `clip: ${clip}; loop: repeat; crossFadeDuration: 0.4`);
+            fixModel(m);
+        });
+
+        document.querySelectorAll(".info-panel").forEach(p => {
+            p.setAttribute('visible', mostrarInfo);
+        });
+    };
+
+    // Eventos de Botones
+    document.getElementById('btn-aplaudir').addEventListener('click', () => {
+        lanzarConfeti(); // El confeti sale siempre
+        ejecutarAccion("APLAUDIR_MEXICO", false);
+    });
+
+    document.getElementById('btn-saludar').addEventListener('click', () => {
+        ejecutarAccion("SALUDAR_MEXICO", true);
+    });
+
+    document.getElementById('btn-limpiar').addEventListener('click', () => {
+        document.querySelectorAll(".modelo-ar").forEach(m => m.removeAttribute('animation-mixer'));
+        document.querySelectorAll(".info-panel").forEach(p => p.setAttribute('visible', false));
+    });
+
+    // Swiper
+    new Swiper(".mySwiper", { pagination: { el: ".swiper-pagination", clickable: true } });
+});
+</script>
+</body>
+</html>
