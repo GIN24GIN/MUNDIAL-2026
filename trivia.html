@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Mundial 2026 - Trivia</title>
+  
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Estilos específicos para la trivia */
+    .trivia-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .trivia-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .trivia-header h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2.5rem;
+      color: var(--texto-principal);
+      margin-bottom: 10px;
+    }
+
+    .trivia-header p {
+      color: var(--texto-secundario);
+      font-size: 1rem;
+    }
+
+    .score-card {
+      background: linear-gradient(135deg, var(--azul-noche), var(--verde-profundo));
+      color: rgb(0, 0, 0);
+      padding: 15px 25px;
+      border-radius: 50px;
+      display: inline-block;
+      margin-bottom: 20px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      box-shadow: var(--sombra-sutil);
+    }
+
+    .question-card {
+      background: rgb(154, 215, 255);
+      border-radius: 24px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: var(--sombra-sutil);
+      border: 1px solid var(--borde);
+      transition: var(--transicion);
+      animation: fadeUp 0.4s ease-out;
+    }
+
+    .question-card:hover {
+      box-shadow: var(--sombra-media);
+    }
+
+    .question-text {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.3rem;
+      color: var(--texto-principal);
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--borde);
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      background: var(--fondo);
+      border: 2px solid var(--borde);
+      border-radius: 60px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      color: var(--texto-principal);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      background: var(--accent-azul);
+      border-color: var(--accent-azul);
+      color: rgb(45, 1, 157);
+      transform: translateX(5px);
+    }
+
+    .option-btn.correct {
+      background: var(--accent-verde);
+      border-color: var(--accent-verde);
+      color: rgb(48, 169, 0);
+    }
+
+    .option-btn.incorrect {
+      background: var(--accent-rojo);
+      border-color: var(--accent-rojo);
+      color: rgb(168, 0, 0);
+    }
+
+    .option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .question-feedback {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .question-feedback.show {
+      display: block;
+    }
+
+    .feedback-correct {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-verde);
+      border-left: 4px solid var(--accent-verde);
+    }
+
+    .feedback-incorrect {
+      background: rgba(220, 38, 38, 0.1);
+      color: var(--accent-rojo);
+      border-left: 4px solid var(--accent-rojo);
+    }
+
+    .final-score {
+      text-align: center;
+      background: white;
+      border-radius: 24px;
+      padding: 40px;
+      margin-top: 20px;
+      box-shadow: var(--sombra-media);
+    }
+
+    .final-score h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .final-score p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    .btn-reiniciar {
+      background: var(--accent-azul);
+      color: rgb(59, 0, 143);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 40px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-reiniciar:hover {
+      transform: scale(1.02);
+      background: #a5c1ff;
+    }
+
+    .btn-nuevas {
+      background: var(--verde-profundo);
+      color: rgb(59, 0, 143);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 40px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+    .btn-nuevas:hover {
+      transform: scale(1.02);
+      background: #a5c1ff;
+    }
+
+    /* Botón de salir */
+    .btn-salir {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-salir:hover {
+      background: #5a6268;
+      transform: scale(1.02);
+    }
+
+    .progress-bar-container {
+      background: var(--borde);
+      border-radius: 20px;
+      height: 10px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background: var(--accent-azul);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+      border-radius: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px;
+      font-size: 1.2rem;
+      color: var(--texto-secundario);
+    }
+
+    /* Ajustes para el navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+    }
+
+    .navbar .btn-salir {
+      margin-left: auto;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html">
+      <img src="logo.jpg" alt="Logo App" class="logo">
+    </a>
+    <h1 class="app-name">Trivia Mundialista</h1>
+    <a href="index.html" class="btn-salir">
+      ✕ Salir
+    </a>
+  </nav>
+
+  <main>
+    <div class="trivia-container">
+      <div class="trivia-header">
+        <h1>PON A PRUEBA TUS CONOCIMIENTOS</h1>
+      </div>
+
+      <div id="trivia-content">
+        <div class="loading">
+          Cargando preguntas...
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Diana Patricia Del Angel Del Angel - Jennifer Carly Garcia Saldana</p>
+  </footer>
+
+  <script>
+    // ===== 50 PREGUNTAS DE MUNDIALES =====
+    const todasLasPreguntas = [
+      // Mundial 1930 - Uruguay
+      { pregunta: "¿Quién fue el campeón del primer Mundial en 1930?", opciones: ["Argentina", "Brasil", "Uruguay", "Italia"], correcta: "Uruguay" },
+      { pregunta: "¿En qué país se jugó el Mundial de 1930?", opciones: ["Brasil", "Uruguay", "Argentina", "Chile"], correcta: "Uruguay" },
+      { pregunta: "¿Quién fue el máximo goleador del Mundial 1930 con 8 goles?", opciones: ["Guillermo Stábile", "José Pedro Cea", "Bert Patenaude", "Preguinho"], correcta: "Guillermo Stábile" },
+      
+      // Mundial 1934 - Italia
+      { pregunta: "¿Quién ganó el Mundial de 1934?", opciones: ["Checoslovaquia", "Alemania", "Italia", "Austria"], correcta: "Italia" },
+      { pregunta: "¿En qué país se disputó el Mundial de 1934?", opciones: ["Francia", "Italia", "Alemania", "España"], correcta: "Italia" },
+      
+      // Mundial 1938 - Francia
+      { pregunta: "¿Quién fue campeón del Mundial de 1938?", opciones: ["Hungría", "Brasil", "Italia", "Suecia"], correcta: "Italia" },
+      { pregunta: "¿Quién fue el goleador del Mundial 1938 con 7 goles?", opciones: ["Leônidas", "György Sárosi", "Silvio Piola", "Gino Colaussi"], correcta: "Leônidas" },
+      
+      // Mundial 1950 - Brasil
+      { pregunta: "¿Quién ganó el Mundial de 1950?", opciones: ["Brasil", "Uruguay", "Suecia", "España"], correcta: "Uruguay" },
+      { pregunta: "¿Cómo se llamó el estadio donde Brasil perdió la final de 1950?", opciones: ["Maracaná", "Centenario", "Pacaembú", "Mineirão"], correcta: "Maracaná" },
+      { pregunta: "Ese partido final es conocido como...", opciones: ["El Maracanazo", "La Tragedia de Maracaná", "El Golpe", "La Derrota Eterna"], correcta: "El Maracanazo" },
+      
+      // Mundial 1954 - Suiza
+      { pregunta: "¿Quién fue campeón del Mundial de 1954?", opciones: ["Hungría", "Alemania Federal", "Austria", "Uruguay"], correcta: "Alemania Federal" },
+      { pregunta: "Hungría llegó invicta a la final y perdió. ¿Cómo se conoce ese partido?", opciones: ["El Milagro de Berna", "La Final del Siglo", "El Partido Perfecto", "La Sorpresa de Suiza"], correcta: "El Milagro de Berna" },
+      
+      // Mundial 1958 - Suecia
+      { pregunta: "¿Quién fue campeón del Mundial de 1958?", opciones: ["Suecia", "Francia", "Brasil", "Alemania"], correcta: "Brasil" },
+      { pregunta: "¿Qué joven estrella de 17 años brilló en este mundial?", opciones: ["Pelé", "Garrincha", "Zito", "Vavá"], correcta: "Pelé" },
+      { pregunta: "Brasil ganó su primer mundial. ¿A quién le ganó la final?", opciones: ["Suecia", "Francia", "Alemania", "URSS"], correcta: "Suecia" },
+      
+      // Mundial 1962 - Chile
+      { pregunta: "¿Quién fue campeón del Mundial de 1962?", opciones: ["Checoslovaquia", "Brasil", "Chile", "Yugoslavia"], correcta: "Brasil" },
+      { pregunta: "¿Quién fue el máximo goleador con 4 goles?", opciones: ["Garrincha", "Vavá", "Léon Sánchez", "Flórián Albert"], correcta: "Garrincha" },
+      
+      // Mundial 1966 - Inglaterra
+      { pregunta: "¿Quién ganó el Mundial de 1966?", opciones: ["Alemania Federal", "Portugal", "Inglaterra", "URSS"], correcta: "Inglaterra" },
+      { pregunta: "¿Quién fue el goleador con 9 goles?", opciones: ["Eusébio", "Geoff Hurst", "Bobby Charlton", "Helmut Haller"], correcta: "Eusébio" },
+      { pregunta: "¿En qué estadio Inglaterra levantó la copa?", opciones: ["Wembley", "Old Trafford", "Anfield", "Stamford Bridge"], correcta: "Wembley" },
+      
+      // Mundial 1970 - México
+      { pregunta: "¿Quién fue campeón del Mundial de 1970?", opciones: ["Italia", "Brasil", "Alemania", "Uruguay"], correcta: "Brasil" },
+      { pregunta: "Brasil ganó su tercer mundial y se quedó con la Copa Jules Rimet. ¿A quién le ganó la final?", opciones: ["Italia", "Alemania", "Uruguay", "Inglaterra"], correcta: "Italia" },
+      { pregunta: "¿Qué jugador brasileño destacó como líder del equipo?", opciones: ["Pelé", "Jairzinho", "Tostão", "Carlos Alberto"], correcta: "Pelé" },
+      
+      // Mundial 1974 - Alemania
+      { pregunta: "¿Quién fue campeón del Mundial de 1974?", opciones: ["Alemania Federal", "Holanda", "Polonia", "Brasil"], correcta: "Alemania Federal" },
+      { pregunta: "¿Qué selección sorprendió con su 'Fútbol Total'?", opciones: ["Holanda", "Alemania", "Brasil", "Argentina"], correcta: "Holanda" },
+      { pregunta: "¿Quién era la estrella de esa Holanda?", opciones: ["Johan Cruyff", "Johan Neeskens", "Rob Rensenbrink", "Johnny Rep"], correcta: "Johan Cruyff" },
+      
+      // Mundial 1978 - Argentina
+      { pregunta: "¿Quién fue campeón del Mundial de 1978?", opciones: ["Holanda", "Perú", "Argentina", "Brasil"], correcta: "Argentina" },
+      { pregunta: "¿Quién fue el goleador con 6 goles?", opciones: ["Mario Kempes", "Leopoldo Luque", "Rob Rensenbrink", "Teófilo Cubillas"], correcta: "Mario Kempes" },
+      { pregunta: "Argentina ganó su primer mundial en casa. ¿En qué estadio fue la final?", opciones: ["Monumental", "La Bombonera", "Córdoba", "Mendoza"], correcta: "Monumental" },
+      
+      // Mundial 1982 - España
+      { pregunta: "¿Quién fue campeón del Mundial de 1982?", opciones: ["Italia", "Alemania", "Polonia", "Francia"], correcta: "Italia" },
+      { pregunta: "¿Quién fue el máximo goleador con 6 goles?", opciones: ["Paolo Rossi", "Karl-Heinz Rummenigge", "Zbigniew Boniek", "Gerry Armstrong"], correcta: "Paolo Rossi" },
+      { pregunta: "Italia ganó su tercer mundial. ¿A quién venció en la final?", opciones: ["Alemania", "Francia", "Polonia", "Brasil"], correcta: "Alemania" },
+      
+      // Mundial 1986 - México
+      { pregunta: "¿Quién fue campeón del Mundial de 1986?", opciones: ["Alemania", "Inglaterra", "Argentina", "Francia"], correcta: "Argentina" },
+      { pregunta: "¿Quién anotó el 'Gol del Siglo'?", opciones: ["Diego Maradona", "Gary Lineker", "Jorge Valdano", "Emilio Butragueño"], correcta: "Diego Maradona" },
+      { pregunta: "¿Cuál fue el marcador de la final Argentina vs Alemania?", opciones: ["3-2", "2-1", "1-0", "3-1"], correcta: "3-2" },
+      
+      // Mundial 1990 - Italia
+      { pregunta: "¿Quién fue campeón del Mundial de 1990?", opciones: ["Italia", "Argentina", "Alemania", "Inglaterra"], correcta: "Alemania" },
+      { pregunta: "¿Quién fue el goleador con 6 goles?", opciones: ["Salvatore Schillaci", "Lothar Matthäus", "Gary Lineker", "Rudi Völler"], correcta: "Salvatore Schillaci" },
+      
+      // Mundial 1994 - Estados Unidos
+      { pregunta: "¿Quién fue campeón del Mundial de 1994?", opciones: ["Italia", "Brasil", "Suecia", "Bulgaria"], correcta: "Brasil" },
+      { pregunta: "¿Quién fue el máximo goleador con 6 goles?", opciones: ["Hristo Stoichkov", "Romário", "Bebeto", "Roberto Baggio"], correcta: "Hristo Stoichkov" },
+      { pregunta: "¿Quién falló el penal decisivo en la final?", opciones: ["Roberto Baggio", "Franco Baresi", "Daniele Massaro", "Alberigo Evani"], correcta: "Roberto Baggio" },
+      
+      // Mundial 1998 - Francia
+      { pregunta: "¿Quién fue campeón del Mundial de 1998?", opciones: ["Brasil", "Francia", "Croacia", "Holanda"], correcta: "Francia" },
+      { pregunta: "¿Qué jugador anotó dos goles en la final?", opciones: ["Zinedine Zidane", "Emmanuel Petit", "Thierry Henry", "Youri Djorkaeff"], correcta: "Zinedine Zidane" },
+      { pregunta: "Francia ganó su primer mundial. ¿A quién le ganó la final?", opciones: ["Brasil", "Italia", "Croacia", "Holanda"], correcta: "Brasil" },
+      
+      // Mundial 2002 - Corea/Japón
+      { pregunta: "¿Quién fue campeón del Mundial de 2002?", opciones: ["Alemania", "Turquía", "Brasil", "Corea del Sur"], correcta: "Brasil" },
+      { pregunta: "¿Quién fue el máximo goleador con 8 goles?", opciones: ["Ronaldo", "Rivaldo", "Miroslav Klose", "El Hadji Diouf"], correcta: "Ronaldo" },
+      { pregunta: "¿Qué selección sorprendió llegando a semifinales?", opciones: ["Corea del Sur", "Japón", "Senegal", "Estados Unidos"], correcta: "Corea del Sur" },
+      
+      // Mundial 2006 - Alemania
+      { pregunta: "¿Quién fue campeón del Mundial de 2006?", opciones: ["Francia", "Portugal", "Italia", "Alemania"], correcta: "Italia" },
+      { pregunta: "¿Quién fue el goleador con 5 goles?", opciones: ["Miroslav Klose", "Thierry Henry", "Zinedine Zidane", "Luca Toni"], correcta: "Miroslav Klose" },
+      { pregunta: "¿Qué jugador fue expulsado en la final por un cabezazo?", opciones: ["Zinedine Zidane", "Marco Materazzi", "Fabio Cannavaro", "Francesco Totti"], correcta: "Zinedine Zidane" },
+      
+      // Mundial 2010 - Sudáfrica
+      { pregunta: "¿Quién fue campeón del Mundial de 2010?", opciones: ["Holanda", "Uruguay", "Alemania", "España"], correcta: "España" },
+      { pregunta: "¿Quién anotó el gol del triunfo en la final?", opciones: ["Andrés Iniesta", "Wesley Sneijder", "Arjen Robben", "Cesc Fàbregas"], correcta: "Andrés Iniesta" },
+      { pregunta: "España ganó su primer mundial. ¿En qué continente se jugó?", opciones: ["África", "América", "Europa", "Asia"], correcta: "África" },
+      
+      // Mundial 2014 - Brasil
+      { pregunta: "¿Quién fue campeón del Mundial de 2014?", opciones: ["Argentina", "Brasil", "Alemania", "Holanda"], correcta: "Alemania" },
+      { pregunta: "¿Cuál fue el resultado del histórico 7-1 de Alemania a Brasil?", opciones: ["7-1", "6-1", "5-0", "7-0"], correcta: "7-1" },
+      { pregunta: "¿Quién fue el máximo goleador con 5 goles?", opciones: ["James Rodríguez", "Thomas Müller", "Lionel Messi", "Neymar"], correcta: "James Rodríguez" },
+      
+      // Mundial 2018 - Rusia
+      { pregunta: "¿Quién fue campeón del Mundial de 2018?", opciones: ["Croacia", "Francia", "Bélgica", "Inglaterra"], correcta: "Francia" },
+      { pregunta: "¿Quién fue el goleador con 6 goles?", opciones: ["Harry Kane", "Kylian Mbappé", "Antoine Griezmann", "Romelu Lukaku"], correcta: "Harry Kane" },
+      { pregunta: "¿Qué país fue anfitrión del Mundial 2018?", opciones: ["Rusia", "Catar", "Brasil", "Alemania"], correcta: "Rusia" },
+      
+      // Mundial 2022 - Catar
+      { pregunta: "¿Quién fue campeón del Mundial de 2022?", opciones: ["Francia", "Croacia", "Argentina", "Marruecos"], correcta: "Argentina" },
+      { pregunta: "¿Quién fue el máximo goleador con 8 goles?", opciones: ["Kylian Mbappé", "Lionel Messi", "Julián Álvarez", "Olivier Giroud"], correcta: "Kylian Mbappé" },
+      { pregunta: "¿Qué selección africana hizo historia llegando a semifinales?", opciones: ["Marruecos", "Senegal", "Túnez", "Ghana"], correcta: "Marruecos" },
+      
+      // Preguntas adicionales de cultura general
+      { pregunta: "¿Qué país tiene más títulos mundiales?", opciones: ["Alemania", "Italia", "Argentina", "Brasil"], correcta: "Brasil" },
+      { pregunta: "¿Cuántos mundiales ha ganado Brasil?", opciones: ["4", "5", "6", "3"], correcta: "5" },
+      { pregunta: "¿Quién es el máximo goleador histórico de los mundiales?", opciones: ["Miroslav Klose", "Ronaldo", "Lionel Messi", "Pelé"], correcta: "Miroslav Klose" },
+      { pregunta: "¿Cuál es el estadio con más finales disputadas?", opciones: ["Maracaná", "Wembley", "Azteca", "Olímpico de Berlín"], correcta: "Azteca" },
+      { pregunta: "¿Qué año se jugó el primer Mundial femenino?", opciones: ["1991", "1995", "1999", "2003"], correcta: "1991" }
+    ];
+
+    console.log("Total de preguntas disponibles:", todasLasPreguntas.length);
+
+    let preguntasActuales = [];
+    let respuestasUsuario = [];
+    let quizTerminado = false;
+
+    function seleccionarPreguntasAleatorias() {
+      const mezcladas = [...todasLasPreguntas];
+      for (let i = mezcladas.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [mezcladas[i], mezcladas[j]] = [mezcladas[j], mezcladas[i]];
+      }
+      return mezcladas.slice(0, 5);
+    }
+
+    function reiniciarQuiz() {
+      preguntasActuales = seleccionarPreguntasAleatorias();
+      respuestasUsuario = preguntasActuales.map(() => ({ seleccionada: null, esCorrecta: null }));
+      quizTerminado = false;
+    }
+
+    function calcularPuntuacion() {
+      return respuestasUsuario.filter(r => r.esCorrecta === true).length;
+    }
+
+    function mostrarFeedback(index) {
+      const feedbackDiv = document.getElementById(`feedback-${index}`);
+      const respuesta = respuestasUsuario[index];
+      if (!respuesta || respuesta.seleccionada === null) return;
+      feedbackDiv.classList.add('show');
+      if (respuesta.esCorrecta) {
+        feedbackDiv.className = "question-feedback show feedback-correct";
+        feedbackDiv.innerHTML = `¡Correcto! ${preguntasActuales[index].pregunta.split('?')[0]}.`;
+      } else {
+        feedbackDiv.className = "question-feedback show feedback-incorrect";
+        feedbackDiv.innerHTML = `Incorrecto. La respuesta correcta es: <strong>${preguntasActuales[index].correcta}</strong>`;
+      }
+    }
+
+    function seleccionarOpcion(preguntaIndex, opcionSeleccionada) {
+      if (quizTerminado) return;
+      if (respuestasUsuario[preguntaIndex].seleccionada !== null) return;
+      
+      const pregunta = preguntasActuales[preguntaIndex];
+      const esCorrecta = (opcionSeleccionada === pregunta.correcta);
+      
+      respuestasUsuario[preguntaIndex] = { seleccionada: opcionSeleccionada, esCorrecta: esCorrecta };
+      
+      const container = document.getElementById(`question-${preguntaIndex}`);
+      const botones = container.querySelectorAll('.option-btn');
+      
+      botones.forEach(btn => {
+        btn.disabled = true;
+        const textoBtn = btn.getAttribute('data-value');
+        if (textoBtn === pregunta.correcta) {
+          btn.classList.add('correct');
+        } else if (textoBtn === opcionSeleccionada && !esCorrecta) {
+          btn.classList.add('incorrect');
+        }
+      });
+      
+      mostrarFeedback(preguntaIndex);
+      
+      const respondidas = respuestasUsuario.filter(r => r.seleccionada !== null).length;
+      const progreso = (respondidas / preguntasActuales.length) * 100;
+      const barraProgreso = document.getElementById('progress-bar');
+      if (barraProgreso) barraProgreso.style.width = `${progreso}%`;
+      
+      if (respondidas === preguntasActuales.length) {
+        quizTerminado = true;
+        mostrarResultadoFinal();
+      }
+    }
+
+    function mostrarResultadoFinal() {
+      const puntuacion = calcularPuntuacion();
+      const total = preguntasActuales.length;
+      const porcentaje = (puntuacion / total) * 100;
+      
+      let mensaje = "";
+      if (porcentaje === 100) mensaje = "¡Perfecto! Eres un experto mundialista";
+      else if (porcentaje >= 80) mensaje = "¡Muy bien! Casi lo logras";
+      else if (porcentaje >= 60) mensaje = "Buen trabajo, pero puedes mejorar";
+      else mensaje = "Sigue practicando, el fútbol tiene mucha historia";
+      
+      const finalScoreHTML = `
+        <div class="final-score">
+          <h2>Puntuación Final</h2>
+          <p style="font-size: 3rem; font-weight: bold;">${puntuacion} / ${total}</p>
+          <p>${mensaje}</p>
+          <button id="btn-reiniciar" class="btn-reiniciar">Jugar de nuevo</button>
+          <button id="btn-nuevas-preguntas" class="btn-nuevas">Nuevas preguntas</button>
+        </div>
+      `;
+      
+      const resultadoContainer = document.getElementById('resultado-final');
+      if (resultadoContainer) {
+        resultadoContainer.innerHTML = finalScoreHTML;
+        resultadoContainer.classList.remove('hidden');
+        
+        document.getElementById('btn-reiniciar').addEventListener('click', () => {
+          resultadoContainer.classList.add('hidden');
+          cargarNuevoQuiz();
+        });
+        
+        document.getElementById('btn-nuevas-preguntas').addEventListener('click', () => {
+          resultadoContainer.classList.add('hidden');
+          cargarNuevoQuiz(true);
+        });
+      }
+    }
+
+    function renderizarPreguntas() {
+      const triviaContent = document.getElementById('trivia-content');
+      
+      let html = `
+        <div class="score-card">
+          ⭐ Puntuación: <span id="puntuacion-actual">0</span> / ${preguntasActuales.length}
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+        </div>
+        <div id="preguntas-container"></div>
+        <div id="resultado-final" class="hidden"></div>
+      `;
+      
+      triviaContent.innerHTML = html;
+      
+      const preguntasContainer = document.getElementById('preguntas-container');
+      
+      preguntasActuales.forEach((pregunta, idx) => {
+        const letras = ['A', 'B', 'C', 'D'];
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question-card';
+        questionDiv.id = `question-${idx}`;
+        
+        let opcionesHTML = '';
+        pregunta.opciones.forEach((opcion, optIdx) => {
+          opcionesHTML += `
+            <button class="option-btn" data-value="${opcion.replace(/"/g, '&quot;')}" data-index="${idx}">
+              ${letras[optIdx]}. ${opcion}
+            </button>
+          `;
+        });
+        
+        questionDiv.innerHTML = `
+          <div class="question-text">${idx + 1}. ${pregunta.pregunta}</div>
+          <div class="options">
+            ${opcionesHTML}
+          </div>
+          <div id="feedback-${idx}" class="question-feedback"></div>
+        `;
+        
+        preguntasContainer.appendChild(questionDiv);
+        
+        const botones = questionDiv.querySelectorAll('.option-btn');
+        botones.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const valor = btn.getAttribute('data-value');
+            seleccionarOpcion(idx, valor);
+            actualizarPuntuacionDisplay();
+          });
+        });
+      });
+    }
+    
+    function actualizarPuntuacionDisplay() {
+      const puntuacionSpan = document.getElementById('puntuacion-actual');
+      if (puntuacionSpan) {
+        puntuacionSpan.textContent = calcularPuntuacion();
+      }
+    }
+    
+    function cargarNuevoQuiz(forzarNuevas = false) {
+      if (forzarNuevas) {
+        preguntasActuales = seleccionarPreguntasAleatorias();
+        respuestasUsuario = preguntasActuales.map(() => ({ seleccionada: null, esCorrecta: null }));
+      } else {
+        reiniciarQuiz();
+      }
+      quizTerminado = false;
+      renderizarPreguntas();
+    }
+    
+    function iniciarTrivia() {
+      reiniciarQuiz();
+      renderizarPreguntas();
+    }
+    
+    iniciarTrivia();
+  </script>
+</body>
+</html>
