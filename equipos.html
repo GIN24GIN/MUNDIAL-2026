@@ -11,8 +11,7 @@
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-  
-  
+  <script src="https://unpkg.com/aframe-particle-system-component@1.1.3/dist/aframe-particle-system-component.min.js"></script>
   <style>
 
     body {
@@ -21,10 +20,9 @@
   background-position: center;  /* Centra la imagen */
   background-attachment: fixed; /* El fondo se queda quieto mientras haces scroll */
   background-repeat: no-repeat; /* Evita que la imagen se repita como mosaico */
-  }
+}
     /* Crucial para que no se vea azul: la escena DEBE ser transparente */
     a-scene { display: block; position: relative; height: 100%; width: 100%; }
-    
     
     .ar-window {
       width: 100%; height: 450px; position: relative; margin: 20px 0;
@@ -124,6 +122,7 @@
           </a-assets>
 
           <a-camera position="0 0 0" look-controls="enabled: false" camera="near: 0.01; far: 10000;"></a-camera>
+
           <a-entity mindar-image-target="targetIndex: 0">
             <a-gltf-model class="modelo-ar" src="#mod-suiza" position="0 -1 -0.5" scale="0.08 0.08 0.08"></a-gltf-model>
             <a-plane class="info-panel" position="0 0.8 0.1" width="1.2" height="0.6" material="color: #28a745; shader: flat; transparent: true; opacity: 0.7;" visible="false">
@@ -311,47 +310,27 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Función para lanzar confeti dinámico (Independiente)
-      const lanzarConfeti = () => {
-        const contenedor = document.querySelector(".contenedor-confeti");
-        if (!contenedor) return;
-
-        for (let i = 0; i < 12; i++) {
-            const balon = document.createElement("a-sphere");
+    const lanzarConfeti = () => {
+        document.querySelectorAll(".contenedor-confeti").forEach(contenedor => {
+            const confeti = document.createElement("a-entity");
             
-            // Configuramos el balón (esfera con tu textura)
-            balon.setAttribute("src", "assets/balon.png");
-            balon.setAttribute("radius", "0.15"); // Tamaño del balón
-            balon.setAttribute("position", "0 0 0");
-            balon.setAttribute("material", "transparent: true; alphaTest: 0.5"); // <--- ESTO ayuda a que el PNG se vea circular
-            
-            // Creamos una animación de "salto" aleatoria para cada uno
-            const destinoX = (Math.random() - 0.5) * 3; // Se dispersan a los lados
-            const destinoY = 2 + Math.random() * 2;     // Suben
-            const destinoZ = (Math.random() - 0.5) * 3;
-            
-            balon.setAttribute("animation__pos", {
-                property: "position",
-                to: `${destinoX} ${destinoY} ${destinoZ}`,
-                dur: 1500,
-                easing: "easeOutQuad"
+            // Configuramos el sistema de partículas directamente
+            confeti.setAttribute("particle-system", {
+                preset: "default",
+                color: "#FFD700, #ed1c24, #28a745",
+                particleCount: 1000,
+                size: 0.1,
+                maxAge: 2,
+                positionSpread: "1 1 1"
             });
 
-            // Animación para que desaparezcan (fade out)
-            balon.setAttribute("animation__op", {
-                property: "material.opacity",
-                from: 1,
-                to: 0,
-                dur: 500,
-                delay: 1000
-            });
+            contenedor.appendChild(confeti);
 
-            contenedor.appendChild(balon);
-
-            // Limpieza: borrar el balón después de que termine la animación
+            // Se elimina después de 4 segundos para mantener limpia la escena
             setTimeout(() => {
-                if (balon.parentNode) contenedor.removeChild(balon);
-            }, 1500);
-        }
+                if (confeti.parentNode) contenedor.removeChild(confeti);
+            }, 4000);
+        });
     };
 
     // Activar Cámara
